@@ -1,0 +1,9 @@
+org\example\view\UsuarioView.class
+org\example\controller\UsuarioController.class
+org\example\controller\UsuarioController$UsuarioCallback.class
+org\example\model\Usuario.class
+org\example\controller\UsuarioController$UsuarioCallbackBoolean.class
+org\example\Main.class
+org\example\controller\UsuarioController$2.class
+org\example\controller\UsuarioController$1.class
+org\example\FirebaseConfig.class
