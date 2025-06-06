@@ -91,10 +91,14 @@ public class UsuarioView extends VBox {
     }
 
     private void cargarUsuarios() {
+        System.out.println("📢 Llamando a obtenerUsuarios()");
         controller.obtenerUsuarios(lista -> Platform.runLater(() -> {
+            System.out.println("📦 Usuarios recibidos: " + lista.size());
             usuariosData.setAll(lista);
         }));
     }
+
+
 
     private void mostrarAlerta(String mensaje) {
         Alert alerta = new Alert(Alert.AlertType.INFORMATION);
