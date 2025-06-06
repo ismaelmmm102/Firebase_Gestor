@@ -3,70 +3,74 @@ package org.example.controller;
 import com.google.firebase.database.*;
 import org.example.model.Usuario;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
+import java.util.function.Consumer;
 
 public class UsuarioController {
 
-    private final DatabaseReference ref = FirebaseDatabase.getInstance().getReference("usuarios");
+    private final DatabaseReference dbRef;
+    private static final String IMAGEN_POR_DEFECTO = "https://cdn-icons-png.flaticon.com/512/1946/1946429.png";
 
-    public interface UsuarioCallback {
-        void onUsuariosCargados(List<Usuario> usuarios);
+    public UsuarioController() {
+        dbRef = FirebaseDatabase.getInstance().getReference("usuarios");
     }
 
-    public interface UsuarioCallbackBoolean {
-        void onResultado(boolean existe);
-    }
-
-    public void obtenerUsuarios(UsuarioCallback callback) {
-        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+    public void obtenerUsuarios(Consumer<List<Usuario>> callback) {
+        dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-                List<Usuario> usuarios = new ArrayList<>();
-                for (DataSnapshot child : snapshot.getChildren()) {
-                    Usuario usuario = child.getValue(Usuario.class);
+                List<Usuario> lista = new ArrayList<>();
+                for (DataSnapshot hijo : snapshot.getChildren()) {
+                    Usuario usuario = hijo.getValue(Usuario.class);
                     if (usuario != null) {
-                        usuario.setId(child.getKey());
-                        usuarios.add(usuario);
+                        usuario.setId(hijo.getKey());
+                        lista.add(usuario);
                     }
                 }
-                callback.onUsuariosCargados(usuarios);
+                callback.accept(lista);
             }
 
             @Override
             public void onCancelled(DatabaseError error) {
-                System.err.println("❌ Error al acceder: " + error.getMessage());
-                callback.onUsuariosCargados(new ArrayList<>());
+                System.err.println("Error al obtener usuarios: " + error.getMessage());
             }
         });
     }
 
-    public void agregarUsuario(String nombre, String correo) {
+    public void agregarUsuario(String nombre, String correo, String imagenUrl) {
         String id = UUID.randomUUID().toString();
         Usuario usuario = new Usuario(id, nombre, correo);
-        ref.child(id).setValueAsync(usuario);
-    }
 
-    public void eliminarUsuario(String id) {
-        ref.child(id).removeValueAsync();
+        if (imagenUrl == null || imagenUrl.trim().isEmpty()) {
+            usuario.setImagenPerfil(IMAGEN_POR_DEFECTO);
+        } else {
+            usuario.setImagenPerfil(imagenUrl);
+        }
+
+        dbRef.child(id).setValueAsync(usuario);
     }
 
     public void actualizarUsuario(Usuario usuario) {
-        ref.child(usuario.getId()).setValueAsync(usuario);
+        if (usuario.getId() != null) {
+            dbRef.child(usuario.getId()).setValueAsync(usuario);
+        }
     }
 
-    public void correoYaExiste(String correo, UsuarioCallbackBoolean callback) {
-        ref.orderByChild("correo").equalTo(correo).addListenerForSingleValueEvent(new ValueEventListener() {
+    public void eliminarUsuario(String id) {
+        dbRef.child(id).removeValueAsync();
+    }
+
+    public void correoYaExiste(String correo, Consumer<Boolean> callback) {
+        dbRef.orderByChild("correo").equalTo(correo).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-                callback.onResultado(snapshot.exists());
+                callback.accept(snapshot.exists());
             }
 
             @Override
             public void onCancelled(DatabaseError error) {
-                System.err.println("❌ Error al verificar correo: " + error.getMessage());
-                callback.onResultado(false);
+                System.err.println("Error al comprobar correo: " + error.getMessage());
+                callback.accept(false);
             }
         });
     }
