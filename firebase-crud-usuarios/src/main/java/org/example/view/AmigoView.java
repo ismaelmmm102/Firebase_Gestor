@@ -13,13 +13,29 @@ import javafx.scene.image.Image;
 import org.example.controller.AmigoController;
 import org.example.model.Amigo;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class AmigoView.
+ */
 public class AmigoView extends VBox {
 
+    /** The tabla. */
     private final TableView<Amigo> tabla;
+    
+    /** The datos. */
     private final ObservableList<Amigo> datos;
+    
+    /** The controller. */
     private final AmigoController controller;
+    
+    /** The user id. */
     private final String userId;
 
+    /**
+     * Instantiates a new amigo view.
+     *
+     * @param userId the user id
+     */
     public AmigoView(String userId) {
         this.userId = userId;
         this.controller = new AmigoController();
@@ -57,12 +73,21 @@ public class AmigoView extends VBox {
         cargarAmigos();
     }
 
+    /**
+     * Cargar amigos.
+     */
     private void cargarAmigos() {
         controller.obtenerAmigos(userId, amigos -> {
             datos.setAll(amigos.stream().filter(a -> a.getCorreo() != null && !a.getCorreo().isEmpty()).toList());
         });
     }
 
+    /**
+     * Mostrar alerta.
+     *
+     * @param mensaje the mensaje
+     * @param tipo the tipo
+     */
     private void mostrarAlerta(String mensaje, Alert.AlertType tipo) {
         Alert alerta = new Alert(tipo);
         alerta.setTitle("Amigos");
@@ -71,6 +96,12 @@ public class AmigoView extends VBox {
         alerta.showAndWait();
     }
 
+    /**
+     * Mostrar.
+     *
+     * @param parent the parent
+     * @param nombreUsuario the nombre usuario
+     */
     public void mostrar(Stage parent, String nombreUsuario) {
         Stage stage = new Stage();
         Scene scene = new Scene(this, 400, 300);

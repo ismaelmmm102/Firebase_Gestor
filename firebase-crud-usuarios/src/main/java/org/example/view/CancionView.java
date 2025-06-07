@@ -11,13 +11,31 @@ import javafx.stage.Stage;
 import org.example.controller.CancionController;
 import org.example.model.Cancion;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class CancionView.
+ */
 public class CancionView extends VBox {
 
+    /** The user id. */
     private final String userId;
+    
+    /** The playlist id. */
     private final String playlistId;
+    
+    /** The playlist nombre. */
     private final String playlistNombre;
+    
+    /** The list view. */
     private final ListView<Cancion> listView;
 
+    /**
+     * Instantiates a new cancion view.
+     *
+     * @param userId the user id
+     * @param playlistId the playlist id
+     * @param playlistNombre the playlist nombre
+     */
     public CancionView(String userId, String playlistId, String playlistNombre) {
         this.userId = userId;
         this.playlistId = playlistId;
@@ -30,6 +48,9 @@ public class CancionView extends VBox {
         getChildren().add(listView);
     }
 
+    /**
+     * Mostrar.
+     */
     public void mostrar() {
         Stage stage = new Stage();
 
@@ -45,6 +66,9 @@ public class CancionView extends VBox {
         cargarCanciones();
     }
 
+    /**
+     * Cargar canciones.
+     */
     private void cargarCanciones() {
         CancionController controller = new CancionController();
         controller.obtenerCanciones(userId, playlistId, canciones -> {

@@ -14,12 +14,29 @@ import javafx.stage.Stage;
 import org.example.controller.PlaylistController;
 import org.example.model.Playlist;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class PlaylistView.
+ */
 public class PlaylistView extends VBox {
+    
+    /** The tabla. */
     private final TableView<Playlist> tabla;
+    
+    /** The playlist data. */
     private final ObservableList<Playlist> playlistData;
+    
+    /** The controller. */
     private final PlaylistController controller;
+    
+    /** The user id. */
     private final String userId;
 
+    /**
+     * Instantiates a new playlist view.
+     *
+     * @param userId the user id
+     */
     public PlaylistView(String userId) {
         this.userId = userId;
         this.controller = new PlaylistController();
@@ -111,10 +128,19 @@ public class PlaylistView extends VBox {
         cargarPlaylists();
     }
 
+    /**
+     * Cargar playlists.
+     */
     private void cargarPlaylists() {
         controller.obtenerPlaylists(userId, listas -> playlistData.setAll(listas));
     }
 
+    /**
+     * Mostrar alerta.
+     *
+     * @param mensaje the mensaje
+     * @param tipo the tipo
+     */
     private void mostrarAlerta(String mensaje, Alert.AlertType tipo) {
         Alert alerta = new Alert(tipo);
         alerta.setTitle("Playlists");
@@ -123,6 +149,12 @@ public class PlaylistView extends VBox {
         alerta.showAndWait();
     }
 
+    /**
+     * Mostrar.
+     *
+     * @param parent the parent
+     * @param nombreUsuario the nombre usuario
+     */
     public void mostrar(Stage parent, String nombreUsuario) {
         Stage stage = new Stage();
         Scene scene = new Scene(this, 700, 500);

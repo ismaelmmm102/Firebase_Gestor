@@ -14,8 +14,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class LoginView.
+ */
 public class LoginView {
 
+    /**
+     * Mostrar.
+     *
+     * @param primaryStage the primary stage
+     */
     public void mostrar(Stage primaryStage) {
         VBox layout = new VBox(10);
         layout.setPadding(new Insets(20));
@@ -64,6 +73,12 @@ public class LoginView {
         primaryStage.show();
     }
 
+    /**
+     * Mostrar alerta.
+     *
+     * @param mensaje the mensaje
+     * @param tipo the tipo
+     */
     private void mostrarAlerta(String mensaje, Alert.AlertType tipo) {
         Alert alerta = new Alert(tipo);
         alerta.setTitle("Inicio de sesión");
@@ -72,6 +87,13 @@ public class LoginView {
         alerta.showAndWait();
     }
 
+    /**
+     * Validar credenciales.
+     *
+     * @param correo the correo
+     * @param contrasena the contrasena
+     * @return true, if successful
+     */
     private boolean validarCredenciales(String correo, String contrasena) {
         try (InputStream input = getClass().getResourceAsStream("/login.properties")) {
             if (input == null) return false;

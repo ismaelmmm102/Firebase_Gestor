@@ -14,14 +14,30 @@ import javafx.stage.Stage;
 import org.example.controller.UsuarioController;
 import org.example.model.Usuario;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class UsuarioView.
+ */
 public class UsuarioView extends VBox {
+    
+    /** The tabla usuarios. */
     private final TableView<Usuario> tablaUsuarios;
+    
+    /** The usuarios data. */
     private final ObservableList<Usuario> usuariosData;
+    
+    /** The controller. */
     private final UsuarioController controller;
 
+    /** The nombre field. */
     private final TextField nombreField = new TextField();
+    
+    /** The correo field. */
     private final TextField correoField = new TextField();
 
+    /**
+     * Instantiates a new usuario view.
+     */
     public UsuarioView() {
         tablaUsuarios = new TableView<>();
         usuariosData = FXCollections.observableArrayList();
@@ -112,10 +128,19 @@ public class UsuarioView extends VBox {
         cargarUsuarios();
     }
 
+    /**
+     * Cargar usuarios.
+     */
     private void cargarUsuarios() {
         controller.obtenerUsuarios(lista -> Platform.runLater(() -> usuariosData.setAll(lista)));
     }
 
+    /**
+     * Mostrar alerta.
+     *
+     * @param mensaje the mensaje
+     * @param tipo the tipo
+     */
     private void mostrarAlerta(String mensaje, Alert.AlertType tipo) {
         Alert alerta = new Alert(tipo);
         alerta.setTitle("Información");
@@ -124,6 +149,9 @@ public class UsuarioView extends VBox {
         alerta.showAndWait();
     }
 
+    /**
+     * Mostrar ventana agregar.
+     */
     private void mostrarVentanaAgregar() {
         Stage ventana = new Stage();
         ventana.setTitle("Agregar nuevo usuario");
