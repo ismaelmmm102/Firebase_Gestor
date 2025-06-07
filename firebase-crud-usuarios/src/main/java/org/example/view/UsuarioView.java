@@ -7,6 +7,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
@@ -26,37 +27,35 @@ public class UsuarioView extends VBox {
         usuariosData = FXCollections.observableArrayList();
         controller = new UsuarioController();
 
-        TableColumn<Usuario, String> colImagen = new TableColumn<>("Imagen");
-        colImagen.setCellValueFactory(new PropertyValueFactory<>("imagenPerfil"));
-        colImagen.setPrefWidth(80);
-        colImagen.setCellFactory(column -> new TableCell<>() {
-            private final ImageView imageView = new ImageView();
-
-            {
-                imageView.setFitHeight(40);
-                imageView.setFitWidth(40);
-                imageView.setPreserveRatio(true);
-            }
-
-            @Override
-            protected void updateItem(String imageUrl, boolean empty) {
-                super.updateItem(imageUrl, empty);
-                if (empty || imageUrl == null || imageUrl.isEmpty()) {
-                    setGraphic(null);
-                } else {
-                    imageView.setImage(new javafx.scene.image.Image(imageUrl, true));
-                    setGraphic(imageView);
-                }
-            }
-        });
-
         TableColumn<Usuario, String> colNombre = new TableColumn<>("Nombre");
         colNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
-        colNombre.prefWidthProperty().bind(tablaUsuarios.widthProperty().multiply(0.4));
+        colNombre.prefWidthProperty().bind(tablaUsuarios.widthProperty().multiply(0.35));
 
         TableColumn<Usuario, String> colCorreo = new TableColumn<>("Correo");
         colCorreo.setCellValueFactory(new PropertyValueFactory<>("correo"));
-        colCorreo.prefWidthProperty().bind(tablaUsuarios.widthProperty().multiply(0.5));
+        colCorreo.prefWidthProperty().bind(tablaUsuarios.widthProperty().multiply(0.45));
+
+        TableColumn<Usuario, String> colImagen = new TableColumn<>("Foto");
+        colImagen.setCellValueFactory(new PropertyValueFactory<>("imagenPerfil"));
+        colImagen.setCellFactory(param -> new TableCell<>() {
+            private final ImageView imageView = new ImageView();
+
+            @Override
+            protected void updateItem(String url, boolean empty) {
+                super.updateItem(url, empty);
+                if (empty || url == null || url.isEmpty()) {
+                    setGraphic(null);
+                } else {
+                    try {
+                        imageView.setImage(new Image(url, 40, 40, true, true));
+                        setGraphic(imageView);
+                    } catch (Exception e) {
+                        setGraphic(null);
+                    }
+                }
+            }
+        });
+        colImagen.prefWidthProperty().bind(tablaUsuarios.widthProperty().multiply(0.2));
 
         tablaUsuarios.getColumns().addAll(colImagen, colNombre, colCorreo);
         tablaUsuarios.setItems(usuariosData);
@@ -66,9 +65,10 @@ public class UsuarioView extends VBox {
         nombreField.setPromptText("Nombre");
         correoField.setPromptText("Correo");
 
-        Button actualizarBtn = new Button("Actualizar");
         Button agregarBtn = new Button("Agregar");
+        Button actualizarBtn = new Button("Actualizar");
         Button eliminarBtn = new Button("Eliminar");
+        Button verPlaylistsBtn = new Button("Ver Playlists");
 
         agregarBtn.setOnAction(e -> mostrarVentanaAgregar());
 
@@ -95,6 +95,21 @@ public class UsuarioView extends VBox {
             }
         });
 
+        verPlaylistsBtn.setOnAction(e -> {
+            Usuario seleccionado = tablaUsuarios.getSelectionModel().getSelectedItem();
+            if (seleccionado != null) {
+                new Stage() {{
+                    setTitle("Playlists de " + seleccionado.getNombre());
+                    setScene(new Scene(new PlaylistView(seleccionado.getId()), 500, 400));
+                    getIcons().add(new Image(getClass().getResourceAsStream("/socialmusic.png")));
+                    getScene().getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
+                    show();
+                }};
+            } else {
+                mostrarAlerta("Selecciona un usuario primero", Alert.AlertType.WARNING);
+            }
+        });
+
         tablaUsuarios.setOnMouseClicked(e -> {
             Usuario seleccionado = tablaUsuarios.getSelectionModel().getSelectedItem();
             if (seleccionado != null) {
@@ -104,7 +119,7 @@ public class UsuarioView extends VBox {
             }
         });
 
-        HBox controles = new HBox(10, nombreField, correoField, actualizarBtn, agregarBtn, eliminarBtn);
+        HBox controles = new HBox(10, nombreField, correoField, actualizarBtn, agregarBtn, eliminarBtn, verPlaylistsBtn);
         controles.setPadding(new Insets(10));
 
         this.getChildren().addAll(tablaUsuarios, controles);
@@ -113,12 +128,14 @@ public class UsuarioView extends VBox {
     }
 
     private void cargarUsuarios() {
-        controller.obtenerUsuarios(lista -> Platform.runLater(() -> usuariosData.setAll(lista)));
+        controller.obtenerUsuarios(lista -> Platform.runLater(() -> {
+            usuariosData.setAll(lista);
+        }));
     }
 
     private void mostrarAlerta(String mensaje, Alert.AlertType tipo) {
         Alert alerta = new Alert(tipo);
-        alerta.setTitle("Mensaje");
+        alerta.setTitle("Información");
         alerta.setHeaderText(null);
         alerta.setContentText(mensaje);
         alerta.showAndWait();
@@ -127,6 +144,7 @@ public class UsuarioView extends VBox {
     private void mostrarVentanaAgregar() {
         Stage ventana = new Stage();
         ventana.setTitle("Agregar nuevo usuario");
+        ventana.getIcons().add(new Image(getClass().getResourceAsStream("/socialmusic.png")));
 
         TextField nombreNuevo = new TextField();
         TextField correoNuevo = new TextField();
@@ -135,24 +153,22 @@ public class UsuarioView extends VBox {
 
         Button guardarBtn = new Button("Guardar");
         guardarBtn.setOnAction(event -> {
-            String nombre = nombreNuevo.getText().trim();
-            String correo = correoNuevo.getText().trim();
+            String nombre = nombreNuevo.getText();
+            String correo = correoNuevo.getText();
 
             if (nombre.isEmpty() || correo.isEmpty()) {
                 mostrarAlerta("Los campos no pueden estar vacíos.", Alert.AlertType.WARNING);
                 return;
             }
 
-            if (!correo.matches("^[\\w.-]+@[\\w.-]+\\.\\w+$")) {
-                mostrarAlerta("Introduce un correo electrónico válido.", Alert.AlertType.ERROR);
+            if (!correo.matches("^.+@.+\\..+$")) {
+                mostrarAlerta("Correo no válido", Alert.AlertType.WARNING);
                 return;
             }
 
             controller.correoYaExiste(correo, existe -> {
                 if (existe) {
-                    Platform.runLater(() ->
-                            mostrarAlerta("Ya existe un usuario con ese correo.", Alert.AlertType.ERROR)
-                    );
+                    Platform.runLater(() -> mostrarAlerta("Ya existe un usuario con ese correo.", Alert.AlertType.WARNING));
                 } else {
                     controller.agregarUsuario(nombre, correo, null);
                     Platform.runLater(() -> {
@@ -167,6 +183,8 @@ public class UsuarioView extends VBox {
         VBox layout = new VBox(10, nombreNuevo, correoNuevo, guardarBtn);
         layout.setPadding(new Insets(20));
         Scene escena = new Scene(layout, 300, 150);
+        escena.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
+
         ventana.setScene(escena);
         ventana.show();
     }

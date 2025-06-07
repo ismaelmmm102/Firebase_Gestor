@@ -24,13 +24,16 @@ public class Main extends Application {
 
     public static void mostrarVentanaPrincipal(Stage stage) {
         UsuarioView root = new UsuarioView();
-        Scene scene = new Scene(root, 700, 500);
+        Scene scene = new Scene(root, 1000, 600);
+
 
         scene.getStylesheets().add(Main.class.getResource("/style.css").toExternalForm());
         stage.getIcons().add(new Image(Main.class.getResourceAsStream("/socialmusic.png")));
 
         stage.setTitle("Social Music - Gestión de Usuarios");
         stage.setScene(scene);
+        stage.centerOnScreen();
+
         stage.show();
     }
 }

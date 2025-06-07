@@ -1,9 +1,15 @@
 org\example\view\LoginView.class
 org\example\view\UsuarioView.class
 org\example\controller\UsuarioController.class
+org\example\model\Playlist.class
+org\example\view\UsuarioView$2.class
 org\example\model\Usuario.class
+org\example\model\Cancion.class
 org\example\view\UsuarioView$1.class
 org\example\Main.class
+org\example\controller\PlaylistController$1.class
 org\example\controller\UsuarioController$2.class
+org\example\controller\PlaylistController.class
 org\example\controller\UsuarioController$1.class
+org\example\view\PlaylistView.class
 org\example\FirebaseConfig.class
