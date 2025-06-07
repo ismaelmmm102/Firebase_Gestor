@@ -13,7 +13,6 @@ public class Main extends Application {
     public void start(Stage stage) {
         FirebaseConfig.initialize();
 
-        // Mostrar vista de login
         LoginView login = new LoginView();
         login.mostrar(stage);
     }

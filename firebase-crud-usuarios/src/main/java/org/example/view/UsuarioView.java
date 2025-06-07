@@ -139,22 +139,22 @@ public class UsuarioView extends VBox {
             String correo = correoNuevo.getText();
 
             if (nombre.isEmpty() || correo.isEmpty()) {
-                mostrarAlerta("⚠️ Los campos no pueden estar vacíos.", Alert.AlertType.WARNING);
+                mostrarAlerta("Los campos no pueden estar vacíos.", Alert.AlertType.WARNING);
                 return;
             }
 
             if (!correo.matches("^.+@.+\\..+$")) {
-                mostrarAlerta("📧 Correo no válido.", Alert.AlertType.WARNING);
+                mostrarAlerta("Correo no válido.", Alert.AlertType.WARNING);
                 return;
             }
 
             controller.correoYaExiste(correo, existe -> {
                 if (existe) {
-                    Platform.runLater(() -> mostrarAlerta("❌ Ya existe un usuario con ese correo.", Alert.AlertType.WARNING));
+                    Platform.runLater(() -> mostrarAlerta("Ya existe un usuario con ese correo.", Alert.AlertType.WARNING));
                 } else {
                     controller.agregarUsuario(nombre, correo, null);
                     Platform.runLater(() -> {
-                        mostrarAlerta("✅ Usuario agregado correctamente.", Alert.AlertType.INFORMATION);
+                        mostrarAlerta("Usuario agregado correctamente.", Alert.AlertType.INFORMATION);
                         cargarUsuarios();
                         ventana.close();
                     });

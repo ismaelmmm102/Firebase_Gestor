@@ -37,13 +37,13 @@ public class LoginView {
             String correo = correoField.getText();
             String pass = passwordField.getText();
             if (correo.isEmpty() || pass.isEmpty()) {
-                mostrarAlerta("⚠️ Todos los campos son obligatorios.", Alert.AlertType.WARNING);
+                mostrarAlerta("Todos los campos son obligatorios.", Alert.AlertType.WARNING);
                 return;
             }
             if (validarCredenciales(correo, pass)) {
                 Main.mostrarVentanaPrincipal(primaryStage);
             } else {
-                mostrarAlerta("❌ Correo o contraseña incorrectos.", Alert.AlertType.ERROR);
+                mostrarAlerta("Correo o contraseña incorrectos.", Alert.AlertType.ERROR);
             }
         });
 

@@ -11,8 +11,6 @@ import javafx.stage.Stage;
 import org.example.controller.CancionController;
 import org.example.model.Cancion;
 
-import java.util.List;
-
 public class CancionView extends VBox {
 
     private final String userId;
@@ -59,13 +57,5 @@ public class CancionView extends VBox {
                 }
             });
         });
-    }
-
-    private void mostrarAlerta(String mensaje, Alert.AlertType tipo) {
-        Alert alerta = new Alert(tipo);
-        alerta.setTitle("Canciones");
-        alerta.setHeaderText(null);
-        alerta.setContentText(mensaje);
-        alerta.showAndWait();
     }
 }

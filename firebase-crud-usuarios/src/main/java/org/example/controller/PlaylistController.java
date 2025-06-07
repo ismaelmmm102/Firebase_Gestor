@@ -39,12 +39,6 @@ public class PlaylistController {
         });
     }
 
-    public void agregarPlaylist(String userId, Playlist playlist) {
-        String id = dbRef.child(userId).child("playlists").push().getKey();
-        playlist.setId(id);
-        dbRef.child(userId).child("playlists").child(id).setValueAsync(playlist);
-    }
-
     public void eliminarPlaylist(String userId, String playlistId) {
         dbRef.child(userId).child("playlists").child(playlistId).removeValueAsync();
     }
