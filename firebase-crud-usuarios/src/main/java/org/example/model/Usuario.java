@@ -5,7 +5,7 @@ import javafx.beans.property.StringProperty;
 
 // TODO: Auto-generated Javadoc
 /**
- * The Class Usuario.
+ * La Clase Usuario.
  */
 public class Usuario {
     

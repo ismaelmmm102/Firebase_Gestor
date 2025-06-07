@@ -16,7 +16,7 @@ import org.example.model.Usuario;
 
 // TODO: Auto-generated Javadoc
 /**
- * The Class UsuarioView.
+ * La Clase UsuarioView.
  */
 public class UsuarioView extends VBox {
     
@@ -36,7 +36,7 @@ public class UsuarioView extends VBox {
     private final TextField correoField = new TextField();
 
     /**
-     * Instantiates a new usuario view.
+     * Instancia una nueva usuario view.
      */
     public UsuarioView() {
         tablaUsuarios = new TableView<>();
@@ -150,7 +150,7 @@ public class UsuarioView extends VBox {
     }
 
     /**
-     * Mostrar ventana agregar.
+     * Mostrar la ventana agregar.
      */
     private void mostrarVentanaAgregar() {
         Stage ventana = new Stage();

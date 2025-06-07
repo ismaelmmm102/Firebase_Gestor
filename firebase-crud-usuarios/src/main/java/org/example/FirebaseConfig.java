@@ -7,7 +7,15 @@ import com.google.firebase.FirebaseOptions;
 import java.io.FileInputStream;
 import java.io.IOException;
 
+// TODO: Auto-generated Javadoc
+/**
+ * La Clase FirebaseConfig.
+ */
 public class FirebaseConfig {
+    
+    /**
+     * Inicializa la base .
+     */
     public static void initialize() {
         try {
             FileInputStream serviceAccount = new FileInputStream("src/main/resources/proyectofinaldam.json");

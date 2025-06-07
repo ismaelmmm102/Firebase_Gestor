@@ -16,7 +16,7 @@ import java.util.Properties;
 
 // TODO: Auto-generated Javadoc
 /**
- * The Class LoginView.
+ * La Clase LoginView.
  */
 public class LoginView {
 
@@ -30,7 +30,6 @@ public class LoginView {
         layout.setPadding(new Insets(20));
         layout.setAlignment(Pos.CENTER);
 
-        // Imagen/logo de la aplicación
         ImageView logo = new ImageView(new Image(getClass().getResourceAsStream("/socialmusic.png")));
         logo.setFitHeight(100);
         logo.setPreserveRatio(true);

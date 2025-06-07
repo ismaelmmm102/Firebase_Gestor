@@ -4,7 +4,7 @@ import javafx.beans.property.*;
 
 // TODO: Auto-generated Javadoc
 /**
- * The Class Playlist.
+ * La Clase Playlist.
  */
 public class Playlist {
     

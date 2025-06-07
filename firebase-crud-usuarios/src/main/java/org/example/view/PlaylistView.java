@@ -16,7 +16,7 @@ import org.example.model.Playlist;
 
 // TODO: Auto-generated Javadoc
 /**
- * The Class PlaylistView.
+ * La Clase PlaylistView.
  */
 public class PlaylistView extends VBox {
     
@@ -33,7 +33,7 @@ public class PlaylistView extends VBox {
     private final String userId;
 
     /**
-     * Instantiates a new playlist view.
+     * Instancia una nueva playlist view.
      *
      * @param userId the user id
      */

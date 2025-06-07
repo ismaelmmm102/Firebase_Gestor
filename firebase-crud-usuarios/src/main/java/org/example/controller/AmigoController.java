@@ -7,14 +7,28 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
+// TODO: Auto-generated Javadoc
+/**
+ * La Clase AmigoController.
+ */
 public class AmigoController {
 
+    /** El ref. */
     private final DatabaseReference ref;
 
+    /**
+     * Instancia un nuevo amigo controller.
+     */
     public AmigoController() {
         this.ref = FirebaseDatabase.getInstance().getReference("usuarios");
     }
 
+    /**
+     * Obtener amigos.
+     *
+     * @param userId el user id
+     * @param callback el callback
+     */
     public void obtenerAmigos(String userId, Consumer<List<Amigo>> callback) {
         ref.child(userId).child("amigos").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -53,6 +67,12 @@ public class AmigoController {
         });
     }
 
+    /**
+     * Eliminar amigo.
+     *
+     * @param userId el user id
+     * @param amigoId el amigo id
+     */
     public void eliminarAmigo(String userId, String amigoId) {
         ref.child(userId).child("amigos").child(amigoId).removeValueAsync();
         ref.child(amigoId).child("amigos").child(userId).removeValueAsync();

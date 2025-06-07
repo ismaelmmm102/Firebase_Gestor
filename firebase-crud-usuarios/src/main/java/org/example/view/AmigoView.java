@@ -15,7 +15,7 @@ import org.example.model.Amigo;
 
 // TODO: Auto-generated Javadoc
 /**
- * The Class AmigoView.
+ * La Clase AmigoView.
  */
 public class AmigoView extends VBox {
 
@@ -32,7 +32,7 @@ public class AmigoView extends VBox {
     private final String userId;
 
     /**
-     * Instantiates a new amigo view.
+     * IInstancia una nueva amigo view.
      *
      * @param userId the user id
      */
@@ -97,7 +97,7 @@ public class AmigoView extends VBox {
     }
 
     /**
-     * Mostrar.
+     * Mostrar la ventana.
      *
      * @param parent the parent
      * @param nombreUsuario the nombre usuario

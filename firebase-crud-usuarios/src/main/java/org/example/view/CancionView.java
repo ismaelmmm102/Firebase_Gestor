@@ -13,7 +13,7 @@ import org.example.model.Cancion;
 
 // TODO: Auto-generated Javadoc
 /**
- * The Class CancionView.
+ * La Clase CancionView.
  */
 public class CancionView extends VBox {
 
@@ -30,7 +30,7 @@ public class CancionView extends VBox {
     private final ListView<Cancion> listView;
 
     /**
-     * Instantiates a new cancion view.
+     * Instancia nueva cancion view.
      *
      * @param userId the user id
      * @param playlistId the playlist id
@@ -49,7 +49,7 @@ public class CancionView extends VBox {
     }
 
     /**
-     * Mostrar.
+     * Mostrar la ventana.
      */
     public void mostrar() {
         Stage stage = new Stage();

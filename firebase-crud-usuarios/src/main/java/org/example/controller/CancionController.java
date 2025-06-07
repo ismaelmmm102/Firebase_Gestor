@@ -8,8 +8,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
+// TODO: Auto-generated Javadoc
+/**
+ * La clase CancionController.
+ */
 public class CancionController {
 
+    /**
+     * Obtener canciones.
+     *
+     * @param userId el user id
+     * @param playlistId la playlist id
+     * @param callback el callback
+     */
     public void obtenerCanciones(String userId, String playlistId, Consumer<List<Cancion>> callback) {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference()
                 .child("usuarios").child(userId).child("playlists").child(playlistId).child("canciones");
