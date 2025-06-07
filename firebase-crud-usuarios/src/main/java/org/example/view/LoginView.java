@@ -1,8 +1,11 @@
 package org.example.view;
 
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.example.Main;
@@ -16,11 +19,16 @@ public class LoginView {
     public void mostrar(Stage primaryStage) {
         VBox layout = new VBox(10);
         layout.setPadding(new Insets(20));
+        layout.setAlignment(Pos.CENTER);
+
+        // Imagen/logo de la aplicación
+        ImageView logo = new ImageView(new Image(getClass().getResourceAsStream("/socialmusic.png")));
+        logo.setFitHeight(100);
+        logo.setPreserveRatio(true);
 
         TextField correoField = new TextField();
         PasswordField passwordField = new PasswordField();
         Button loginButton = new Button("Iniciar Sesión");
-        Label mensaje = new Label();
 
         correoField.setPromptText("Correo");
         passwordField.setPromptText("Contraseña");
@@ -39,19 +47,23 @@ public class LoginView {
             }
         });
 
-        layout.getChildren().addAll(new Label("Correo:"), correoField,
+        layout.getChildren().addAll(
+                logo,
+                new Label("Correo:"), correoField,
                 new Label("Contraseña:"), passwordField,
-                loginButton, mensaje);
+                loginButton
+        );
 
-        Scene scene = new Scene(layout, 300, 200);
+        Scene scene = new Scene(layout, 320, 340);
         scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
 
-        primaryStage.getIcons().add(new javafx.scene.image.Image(getClass().getResourceAsStream("/socialmusic.png")));
+        primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/socialmusic.png")));
         primaryStage.setScene(scene);
-        primaryStage.setTitle("Login");
+        primaryStage.setTitle("Social Music - Login");
+        primaryStage.centerOnScreen();
         primaryStage.show();
-
     }
+
     private void mostrarAlerta(String mensaje, Alert.AlertType tipo) {
         Alert alerta = new Alert(tipo);
         alerta.setTitle("Inicio de sesión");
@@ -59,6 +71,7 @@ public class LoginView {
         alerta.setContentText(mensaje);
         alerta.showAndWait();
     }
+
     private boolean validarCredenciales(String correo, String contrasena) {
         try (InputStream input = getClass().getResourceAsStream("/login.properties")) {
             if (input == null) return false;

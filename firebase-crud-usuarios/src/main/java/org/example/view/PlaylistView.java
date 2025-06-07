@@ -28,23 +28,20 @@ public class PlaylistView extends VBox {
         this.tabla = new TableView<>();
 
         tabla.setItems(playlistData);
-        tabla.setPrefHeight(250);
-        tabla.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY); // Hace que se ajuste automáticamente al ancho disponible
-        VBox.setVgrow(tabla, Priority.ALWAYS); // Permite que la tabla crezca
+        tabla.setPrefHeight(400);
+        tabla.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        VBox.setVgrow(tabla, Priority.ALWAYS);
 
         TableColumn<Playlist, String> nombreCol = new TableColumn<>("Nombre");
         nombreCol.setCellValueFactory(new PropertyValueFactory<>("nombre"));
-        nombreCol.prefWidthProperty().bind(tabla.widthProperty().multiply(0.4));
 
         TableColumn<Playlist, String> descCol = new TableColumn<>("Descripción");
         descCol.setCellValueFactory(new PropertyValueFactory<>("descripcion"));
-        descCol.prefWidthProperty().bind(tabla.widthProperty().multiply(0.4));
 
         TableColumn<Playlist, Boolean> privadaCol = new TableColumn<>("Privada");
         privadaCol.setCellValueFactory(new PropertyValueFactory<>("esPrivada"));
         privadaCol.setCellFactory(CheckBoxTableCell.forTableColumn(privadaCol));
         privadaCol.setEditable(false);
-        privadaCol.prefWidthProperty().bind(tabla.widthProperty().multiply(0.2));
 
         tabla.getColumns().addAll(nombreCol, descCol, privadaCol);
 
@@ -52,7 +49,6 @@ public class PlaylistView extends VBox {
         TextField modificarDescField = new TextField();
         modificarNombreField.setPromptText("Nuevo nombre");
         modificarDescField.setPromptText("Nueva descripción");
-
         CheckBox privacidadCheck = new CheckBox("Privada");
 
         Button actualizarBtn = new Button("Actualizar");
@@ -97,13 +93,9 @@ public class PlaylistView extends VBox {
 
         HBox form = new HBox(10, modificarNombreField, modificarDescField, privacidadCheck, actualizarBtn, eliminarBtn);
         form.setPadding(new Insets(10));
-        form.setMaxWidth(Double.MAX_VALUE);
-        HBox.setHgrow(modificarNombreField, Priority.ALWAYS);
-        HBox.setHgrow(modificarDescField, Priority.ALWAYS);
 
         this.setSpacing(10);
         this.setPadding(new Insets(10));
-        this.setMaxWidth(Double.MAX_VALUE);
         this.getChildren().addAll(tabla, form);
 
         cargarPlaylists();
@@ -123,7 +115,7 @@ public class PlaylistView extends VBox {
 
     public void mostrarEnNuevaVentana(String nombreUsuario) {
         Stage stage = new Stage();
-        Scene scene = new Scene(this, 800, 800); // Ancho ampliado
+        Scene scene = new Scene(this, 800, 600);
         scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
         stage.getIcons().add(new Image(getClass().getResourceAsStream("/socialmusic.png")));
         stage.setTitle("Playlists de " + nombreUsuario);
