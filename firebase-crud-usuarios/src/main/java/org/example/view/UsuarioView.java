@@ -101,13 +101,16 @@ public class UsuarioView extends VBox {
             if (seleccionado != null) {
                 new Stage() {{
                     setTitle("Playlists de " + seleccionado.getNombre());
-                    setScene(new Scene(new PlaylistView(seleccionado.getId()), 700, 400));
+                    setScene(new Scene(new PlaylistView(seleccionado.getId()), 500, 400));
+                    getIcons().add(new Image(getClass().getResourceAsStream("/socialmusic.png")));
+                    getScene().getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
                     show();
                 }};
             } else {
                 mostrarAlerta("Selecciona un usuario primero", Alert.AlertType.WARNING);
             }
         });
+
 
         verAmigosBtn.setOnAction(e -> {
             Usuario seleccionado = tablaUsuarios.getSelectionModel().getSelectedItem();
