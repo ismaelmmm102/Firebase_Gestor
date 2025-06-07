@@ -69,6 +69,7 @@ public class UsuarioView extends VBox {
         Button actualizarBtn = new Button("Actualizar");
         Button eliminarBtn = new Button("Eliminar");
         Button verPlaylistsBtn = new Button("Ver Playlists");
+        Button verAmigosBtn = new Button("Ver Amigos");
 
         agregarBtn.setOnAction(e -> mostrarVentanaAgregar());
 
@@ -100,11 +101,18 @@ public class UsuarioView extends VBox {
             if (seleccionado != null) {
                 new Stage() {{
                     setTitle("Playlists de " + seleccionado.getNombre());
-                    setScene(new Scene(new PlaylistView(seleccionado.getId()), 500, 400));
-                    getIcons().add(new Image(getClass().getResourceAsStream("/socialmusic.png")));
-                    getScene().getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
+                    setScene(new Scene(new PlaylistView(seleccionado.getId()), 700, 400));
                     show();
                 }};
+            } else {
+                mostrarAlerta("Selecciona un usuario primero", Alert.AlertType.WARNING);
+            }
+        });
+
+        verAmigosBtn.setOnAction(e -> {
+            Usuario seleccionado = tablaUsuarios.getSelectionModel().getSelectedItem();
+            if (seleccionado != null) {
+                new AmigoView(seleccionado.getId()).mostrarEnNuevaVentana(seleccionado.getNombre());
             } else {
                 mostrarAlerta("Selecciona un usuario primero", Alert.AlertType.WARNING);
             }
@@ -119,7 +127,7 @@ public class UsuarioView extends VBox {
             }
         });
 
-        HBox controles = new HBox(10, nombreField, correoField, actualizarBtn, agregarBtn, eliminarBtn, verPlaylistsBtn);
+        HBox controles = new HBox(10, nombreField, correoField, actualizarBtn, agregarBtn, eliminarBtn, verPlaylistsBtn, verAmigosBtn);
         controles.setPadding(new Insets(10));
 
         this.getChildren().addAll(tablaUsuarios, controles);
@@ -128,9 +136,7 @@ public class UsuarioView extends VBox {
     }
 
     private void cargarUsuarios() {
-        controller.obtenerUsuarios(lista -> Platform.runLater(() -> {
-            usuariosData.setAll(lista);
-        }));
+        controller.obtenerUsuarios(lista -> Platform.runLater(() -> usuariosData.setAll(lista)));
     }
 
     private void mostrarAlerta(String mensaje, Alert.AlertType tipo) {
@@ -144,7 +150,6 @@ public class UsuarioView extends VBox {
     private void mostrarVentanaAgregar() {
         Stage ventana = new Stage();
         ventana.setTitle("Agregar nuevo usuario");
-        ventana.getIcons().add(new Image(getClass().getResourceAsStream("/socialmusic.png")));
 
         TextField nombreNuevo = new TextField();
         TextField correoNuevo = new TextField();
@@ -184,7 +189,7 @@ public class UsuarioView extends VBox {
         layout.setPadding(new Insets(20));
         Scene escena = new Scene(layout, 300, 150);
         escena.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
-
+        ventana.getIcons().add(new Image(getClass().getResourceAsStream("/socialmusic.png")));
         ventana.setScene(escena);
         ventana.show();
     }

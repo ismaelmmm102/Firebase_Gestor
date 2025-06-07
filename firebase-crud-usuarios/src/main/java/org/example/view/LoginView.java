@@ -28,11 +28,14 @@ public class LoginView {
         loginButton.setOnAction(e -> {
             String correo = correoField.getText();
             String pass = passwordField.getText();
-
+            if (correo.isEmpty() || pass.isEmpty()) {
+                mostrarAlerta("⚠️ Todos los campos son obligatorios.", Alert.AlertType.WARNING);
+                return;
+            }
             if (validarCredenciales(correo, pass)) {
                 Main.mostrarVentanaPrincipal(primaryStage);
             } else {
-                mensaje.setText("Credenciales incorrectas.");
+                mostrarAlerta("❌ Correo o contraseña incorrectos.", Alert.AlertType.ERROR);
             }
         });
 
@@ -49,7 +52,13 @@ public class LoginView {
         primaryStage.show();
 
     }
-
+    private void mostrarAlerta(String mensaje, Alert.AlertType tipo) {
+        Alert alerta = new Alert(tipo);
+        alerta.setTitle("Inicio de sesión");
+        alerta.setHeaderText(null);
+        alerta.setContentText(mensaje);
+        alerta.showAndWait();
+    }
     private boolean validarCredenciales(String correo, String contrasena) {
         try (InputStream input = getClass().getResourceAsStream("/login.properties")) {
             if (input == null) return false;
