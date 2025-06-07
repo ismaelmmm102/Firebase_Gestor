@@ -26,7 +26,6 @@ public class Main extends Application {
         UsuarioView root = new UsuarioView();
         Scene scene = new Scene(root, 1000, 600);
 
-
         scene.getStylesheets().add(Main.class.getResource("/style.css").toExternalForm());
         stage.getIcons().add(new Image(Main.class.getResourceAsStream("/socialmusic.png")));
 

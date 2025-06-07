@@ -3,28 +3,23 @@ package org.example.controller;
 import com.google.firebase.database.*;
 import org.example.model.Usuario;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Consumer;
 
 public class UsuarioController {
 
-    private final DatabaseReference dbRef;
-    private static final String IMAGEN_POR_DEFECTO = "https://cdn-icons-png.flaticon.com/512/1946/1946429.png";
-
-    public UsuarioController() {
-        dbRef = FirebaseDatabase.getInstance().getReference("usuarios");
-    }
+    private final DatabaseReference ref = FirebaseDatabase.getInstance().getReference("usuarios");
 
     public void obtenerUsuarios(Consumer<List<Usuario>> callback) {
-        dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 List<Usuario> lista = new ArrayList<>();
                 for (DataSnapshot hijo : snapshot.getChildren()) {
-                    Usuario usuario = hijo.getValue(Usuario.class);
-                    if (usuario != null) {
-                        usuario.setId(hijo.getKey());
-                        lista.add(usuario);
+                    Usuario u = hijo.getValue(Usuario.class);
+                    if (u != null && u.getCorreo() != null) {
+                        lista.add(u);
                     }
                 }
                 callback.accept(lista);
@@ -37,31 +32,26 @@ public class UsuarioController {
         });
     }
 
-    public void agregarUsuario(String nombre, String correo, String imagenUrl) {
-        String id = UUID.randomUUID().toString();
-        Usuario usuario = new Usuario(id, nombre, correo);
-
-        if (imagenUrl == null || imagenUrl.trim().isEmpty()) {
-            usuario.setImagenPerfil(IMAGEN_POR_DEFECTO);
-        } else {
-            usuario.setImagenPerfil(imagenUrl);
+    public void agregarUsuario(String nombre, String correo, String imagen) {
+        String id = ref.push().getKey();
+        if (id == null) return;
+        Usuario nuevo = new Usuario(id, nombre, correo);
+        if (imagen != null) {
+            nuevo.setImagenPerfil(imagen);
         }
-
-        dbRef.child(id).setValueAsync(usuario);
+        ref.child(id).setValueAsync(nuevo);
     }
 
     public void actualizarUsuario(Usuario usuario) {
-        if (usuario.getId() != null) {
-            dbRef.child(usuario.getId()).setValueAsync(usuario);
-        }
+        ref.child(usuario.getId()).child("nombre").setValueAsync(usuario.getNombre());
     }
 
     public void eliminarUsuario(String id) {
-        dbRef.child(id).removeValueAsync();
+        ref.child(id).removeValueAsync();
     }
 
     public void correoYaExiste(String correo, Consumer<Boolean> callback) {
-        dbRef.orderByChild("correo").equalTo(correo).addListenerForSingleValueEvent(new ValueEventListener() {
+        ref.orderByChild("correo").equalTo(correo).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 callback.accept(snapshot.exists());
@@ -69,7 +59,6 @@ public class UsuarioController {
 
             @Override
             public void onCancelled(DatabaseError error) {
-                System.err.println("Error al comprobar correo: " + error.getMessage());
                 callback.accept(false);
             }
         });

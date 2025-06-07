@@ -4,7 +4,9 @@ import com.google.firebase.database.*;
 import org.example.model.Playlist;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 
 public class PlaylistController {
@@ -48,6 +50,14 @@ public class PlaylistController {
     }
 
     public void actualizarPlaylist(String userId, Playlist playlist) {
-        dbRef.child(userId).child("playlists").child(playlist.getId()).setValueAsync(playlist);
+        DatabaseReference ref = dbRef.child(userId).child("playlists").child(playlist.getId());
+
+        Map<String, Object> updates = new HashMap<>();
+        updates.put("nombre", playlist.getNombre());
+        updates.put("descripcion", playlist.getDescripcion());
+        updates.put("esPrivada", playlist.isEsPrivada());
+
+        ref.updateChildrenAsync(updates);
     }
+
 }
